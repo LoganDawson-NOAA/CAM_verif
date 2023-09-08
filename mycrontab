@@ -1,0 +1,55 @@
+#/*===================================================================================================================================================================================*/
+##/* Sample crontab entries with best practices:                                                                                                                                       */
+##/*                                                                                                                                                                                   */
+##/* 1. TEST to make sure target script exists BEFORE executing, and                                                                                                                   */
+##/*                                                                                                                                                                                   */
+##/* 2. Be sure to handle STDOUT/STEDERR appropriately.                                                                                                                                */
+##/*                                                                                                                                                                                   */
+##/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+### HOURLY JOBS ####
+
+# Files copied every third hour hourly at 20 past the hour
+#00 * * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/Hera/drive_hera.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/hera_copy.out 2>&1
+
+# MRMS files copied from dcom hourly at 20 past the hour
+20 * * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/drive_mrms_files.sh copy 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/mrms_copy.out 2>&1
+
+# MRMS verification jobs submitted hourly at the bottom of the hour
+30 * * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/drive_metplus_verif.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/metplus_cam_verif.out 2>&1
+
+
+### TEMP JOBS ####
+#10 17 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/AWS/drive_load_to_metviewer.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/loading.out 2>&1
+#30 23 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/AWS/g1.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/graphx_cam.out 2>&1
+#05 04 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/AWS/g2.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/graphx_recent.out 2>&1
+#10 03 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/AWS/g3.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/graphx_recent.out 2>&1
+
+
+  
+### DAILY JOBS ####
+
+# MRMS files archived to HPSS (on one-day lag) daily at 0005 UTC
+05 00 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/drive_mrms_files.sh archive 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/mrms_archive.out 2>&1
+
+# Prod/para HRW files copied to backup com directory on Cray (on six-day lag) daily at 0010 UTC
+10 00 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/copy_hiresw.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/hiresw_copy.out 2>&1
+
+# Verification stats loaded to AWS METviewer daily at 0030 UTC
+#30 00 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/AWS/drive_load_to_metviewer.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/mv_daily_load.out 2>&1
+
+# Generate SSPF files (valid on 12Z of current day) daily at 0100 UTC
+00 01 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/drive_surr_svr.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/surr_svr.out 2>&1
+
+# Download SPC storm reports (on 7-day lag) daily at 0600 UTC
+00 06 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/drive_spc_reports.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/spc_reps.out 2>&1
+
+# Generate mask files for SPC outlook areas daily at 2200 UTC
+00 22 * * * /gpfs/dell2/emc/verification/save/Logan.Dawson/CAM_verif/gen_spc_otlk_mask.sh 1>/gpfs/dell2/ptmp/Logan.Dawson/cron.out/gen_spc_otlk_mask.out 2>&1
+
+
+##10 * * * * test -f /gpfs/dell1/ptmp/User.Name/cron/mycronscript-1.ksh && /gpfs/dell1/ptmp/User.Name/cron/mycronscript-1.ksh 1>/gpfs/dell1/ptmp/User.Name/cron/mycronscript-1.log 2>&1
+##20 * * * * test -f /gpfs/dell2/ptmp/User.Name/cron/mycronscript-2.ksh && /gpfs/dell2/ptmp/User.Name/cron/mycronscript-2.ksh 1>/gpfs/dell2/ptmp/User.Name/cron/mycronscript-2.log 2>&1
+##30 * * * * test -f /gpfs/dell3/ptmp/User.Name/cron/mycronscript-3.ksh && /gpfs/dell3/ptmp/User.Name/cron/mycronscript-3.ksh 1>/gpfs/dell3/ptmp/User.Name/cron/mycronscript-3.log 2>&1
+#t
+##/*===================================================================================================================================================================================*/
